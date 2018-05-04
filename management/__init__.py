@@ -4,7 +4,7 @@ from enum import Enum
 
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow
 
-from management.gui.form import *
+from management.gui import *
 
 DIALOG_STATE = {}
 
