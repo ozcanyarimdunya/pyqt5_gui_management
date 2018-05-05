@@ -2,7 +2,8 @@ import sys
 from abc import abstractmethod
 from enum import Enum
 
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QSplitter, QFrame
 
 from management.gui import *
 
@@ -38,7 +39,7 @@ class Dialog(QDialog, Ui_Dialog):
         DIALOG_TYPE_COMPANY_NAME = "Company Name"
 
 
-class BaseForm(QWidget):
+class BaseForm(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
@@ -72,10 +73,17 @@ class MainForm(QMainWindow, Ui_MainWindow):
         self.initialise()
 
     def initialise(self):
+        splitter = QSplitter()
         self.left_form = LeftForm(parent=self)
-        self.gridLayout.addWidget(self.left_form, 0, 0, 1, 1)
+        self.left_form.setFrameShape(QFrame.StyledPanel)
+
         self.middle_form = MiddleForm(parent=self)
-        self.gridLayout.addWidget(self.middle_form, 0, 1, 1, 1)
+        self.middle_form.setFrameShape(QFrame.StyledPanel)
+
+        splitter.addWidget(self.left_form)
+        splitter.addWidget(self.middle_form)
+
+        self.gridLayout.addWidget(splitter)
 
 
 if __name__ == '__main__':

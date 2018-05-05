@@ -26,8 +26,9 @@ class Ui_MainWindow(object):
         # self.label_middle.setObjectName("label_middle")
         # self.gridLayout.addWidget(self.label_middle, 0, 1, 1, 1)
 
-        self.gridLayout.setColumnStretch(0, 1)
-        self.gridLayout.setColumnStretch(1, 4)
+        # self.gridLayout.setColumnStretch(0, 1)
+        # self.gridLayout.setColumnStretch(1, 4)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
