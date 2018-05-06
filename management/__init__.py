@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QSplitter, QFram
 
 from management.gui import *
 from management.core.database import ProjectsModel
+from management.core.table_models import CustomListModel
 
 DIALOG_STATE = {}
 
@@ -75,6 +76,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.initialise()
+        self.add_data_to_table()
 
     def initialise(self):
         splitter = QSplitter()
@@ -88,6 +90,12 @@ class MainForm(QMainWindow, Ui_MainWindow):
         splitter.addWidget(self.middle_form)
 
         self.gridLayout.addWidget(splitter)
+
+    def add_data_to_table(self):
+        header, data = ProjectsModel().get_projects()
+
+        model = CustomListModel(header=header, data=data)
+        self.middle_form.tableViewData.setModel(model)
 
 
 if __name__ == '__main__':

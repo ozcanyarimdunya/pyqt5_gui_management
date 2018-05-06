@@ -34,4 +34,6 @@ class ProjectsModel:
         self.__cursor.execute(
             """SELECT * FROM PROJECTS""")
 
-        return self.__cursor.fetchall()
+        headers = list(map(lambda x: x[0], self.__cursor.description))
+        data = self.__cursor.fetchall()
+        return headers, data

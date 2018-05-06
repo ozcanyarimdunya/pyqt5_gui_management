@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 import pandas as pd
 
 
-class PandasModel(QtCore.QAbstractTableModel):
+class CustomPandasModel(QtCore.QAbstractTableModel):
     def __init__(self, df=pd.DataFrame(), parent=None):
         super().__init__(parent)
         self._df = df
@@ -59,3 +59,38 @@ class PandasModel(QtCore.QAbstractTableModel):
         self._df.sort_values(colname, ascending=order == QtCore.Qt.AscendingOrder, inplace=True)
         self._df.reset_index(inplace=True, drop=True)
         self.layoutChanged.emit()
+
+
+class CustomListModel(QtCore.QAbstractTableModel):
+    def __init__(self, header: list = None, data: list = None, parent=None):
+        super().__init__(parent=parent)
+        self.__header = header
+        self.__data = data
+
+    def rowCount(self, parent: QtCore.QModelIndex = ...):
+        return len(self.__data)
+
+    def columnCount(self, parent: QtCore.QModelIndex = ...):
+        return len(self.__header)
+
+    def headerData(self, section: int, orientation: QtCore.Qt.Orientation, role: int = QtCore.Qt.DisplayRole):
+        if role != QtCore.Qt.DisplayRole:
+            return QtCore.QVariant()
+
+        if orientation == QtCore.Qt.Horizontal:
+            try:
+                return self.__header[section]
+            except (IndexError,):
+                return QtCore.QVariant()
+        elif orientation == QtCore.Qt.Vertical:
+            try:
+                return section + 1
+            except (IndexError,):
+                return QtCore.QVariant()
+
+    def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.DisplayRole):
+        if index.isValid():
+            if role == QtCore.Qt.DisplayRole:
+                return QtCore.QVariant(str(self.__data[index.row()][index.column()]))
+
+        return QtCore.QVariant()

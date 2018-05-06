@@ -8,17 +8,17 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_FormMiddle(object):
     def setupUi(self, FormMiddle):
         FormMiddle.setObjectName("FormMiddle")
         FormMiddle.resize(500, 300)
         self.gridLayout = QtWidgets.QGridLayout(FormMiddle)
         self.gridLayout.setObjectName("gridLayout")
-        self.tableWidgetData = QtWidgets.QTableWidget(FormMiddle)
-        self.tableWidgetData.setObjectName("tableWidgetData")
-        self.tableWidgetData.setColumnCount(0)
-        self.tableWidgetData.setRowCount(0)
-        self.gridLayout.addWidget(self.tableWidgetData, 0, 0, 1, 1)
+
+        self.tableViewData = QtWidgets.QTableView(FormMiddle)
+        self.tableViewData.setObjectName("tableWidgetData")
+        self.gridLayout.addWidget(self.tableViewData, 0, 0, 1, 1)
 
         self.retranslateUi(FormMiddle)
         QtCore.QMetaObject.connectSlotsByName(FormMiddle)
@@ -26,4 +26,3 @@ class Ui_FormMiddle(object):
     def retranslateUi(self, FormMiddle):
         _translate = QtCore.QCoreApplication.translate
         FormMiddle.setWindowTitle(_translate("FormMiddle", "Form"))
-
