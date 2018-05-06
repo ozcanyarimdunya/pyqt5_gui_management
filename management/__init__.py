@@ -2,10 +2,10 @@ import sys
 from abc import abstractmethod
 from enum import Enum
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QSplitter, QFrame
+from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QSplitter, QFrame
 
 from management.gui import *
+from management.core.database import ProjectsModel
 
 DIALOG_STATE = {}
 
@@ -27,12 +27,16 @@ class Dialog(QDialog, Ui_Dialog):
     def btn_ok_clicked(self):
         project_name = self.lineEdit_ProjectName.text()
         company_name = self.lineEdit_CompanyName.text()
+
+        # Database interaction
+        ProjectsModel().add_project(name=project_name, company=company_name)
+
         DIALOG_STATE.__setitem__(self.DialogType.DIALOG_TYPE_PROJECT_NAME, project_name)
         DIALOG_STATE.__setitem__(self.DialogType.DIALOG_TYPE_COMPANY_NAME, company_name)
 
-        for st in self.DialogType:
-            if DIALOG_STATE.get(st):
-                print(DIALOG_STATE.get(st))
+        # for st in self.DialogType:
+        #     if DIALOG_STATE.get(st):
+        #         print(DIALOG_STATE.get(st))
 
     class DialogType(Enum):
         DIALOG_TYPE_PROJECT_NAME = "Project Name"
