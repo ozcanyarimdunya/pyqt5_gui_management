@@ -1,6 +1,8 @@
+import typing
 from PyQt5 import QtCore
 
 import pandas as pd
+from PyQt5.QtCore import QModelIndex, Qt
 
 
 class CustomPandasModel(QtCore.QAbstractTableModel):
@@ -33,7 +35,7 @@ class CustomPandasModel(QtCore.QAbstractTableModel):
 
         return QtCore.QVariant(str(self._df.ix[index.row(), index.column()]))
 
-    def setData(self, index, value, role):
+    def setData(self, index: QModelIndex, value: typing.Any, role: int = ...):
         row = self._df.index[index.row()]
         col = self._df.columns[index.column()]
         if hasattr(value, 'toPyObject'):
@@ -53,10 +55,10 @@ class CustomPandasModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         return len(self._df.columns)
 
-    def sort(self, column, order):
-        colname = self._df.columns.tolist()[column]
+    def sort(self, column: int, order: Qt.SortOrder = ...):
+        col_name = self._df.columns.tolist()[column]
         self.layoutAboutToBeChanged.emit()
-        self._df.sort_values(colname, ascending=order == QtCore.Qt.AscendingOrder, inplace=True)
+        self._df.sort_values(col_name, ascending=order == QtCore.Qt.AscendingOrder, inplace=True)
         self._df.reset_index(inplace=True, drop=True)
         self.layoutChanged.emit()
 
