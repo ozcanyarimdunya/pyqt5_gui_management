@@ -20,10 +20,11 @@ class MiddleWidget(QFrame, Ui_FormMiddle):
         self.tableViewData.setSelectionBehavior(QTableView.SelectRows)
         self.tableViewData.setSelectionMode(QAbstractItemView.SingleSelection)
         self.fill_table()
-
-    def configure(self):
+        
         # Need to define in here first
         self.dialog = EditDialog(project_id=None)
+
+    def configure(self):
         self.tableViewData.doubleClicked.connect(lambda row_item: self.table_cell_double_clicked(row_item))
 
     def fill_table(self):
