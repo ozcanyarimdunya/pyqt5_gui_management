@@ -42,6 +42,7 @@ class MiddleWidget(QFrame, Ui_FormMiddle):
                 break  # _id is in first place
 
         self.dialog.project_id = _id
+        # need to re-initialise to update project_id
         self.dialog.initialise()
         self.dialog.show()
 
