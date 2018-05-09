@@ -13,11 +13,10 @@ class LeftWidget(QFrame, Ui_FormLeft):
         self.configure()
 
     def initialise(self):
-        pass
-
-    def configure(self):
         # Need to define in here first
         self.dialog = AddNewDialog()
+
+    def configure(self):
         self.pushButton_CreateNewProject.clicked.connect(lambda: self.btn_create_clicked())
 
     def btn_create_clicked(self):
