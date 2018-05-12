@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/left.ui'
+# Form implementation generated from reading ui file 'left.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
@@ -14,11 +14,12 @@ class Ui_FormLeft(object):
         FormLeft.resize(200, 450)
         self.gridLayout = QtWidgets.QGridLayout(FormLeft)
         self.gridLayout.setObjectName("gridLayout")
+        self.listView = QtWidgets.QListView(FormLeft)
+        self.listView.setObjectName("listView")
+        self.gridLayout.addWidget(self.listView, 1, 0, 1, 1)
         self.pushButton_CreateNewProject = QtWidgets.QPushButton(FormLeft)
         self.pushButton_CreateNewProject.setObjectName("pushButton_CreateNewProject")
         self.gridLayout.addWidget(self.pushButton_CreateNewProject, 0, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
 
         self.retranslateUi(FormLeft)
         QtCore.QMetaObject.connectSlotsByName(FormLeft)

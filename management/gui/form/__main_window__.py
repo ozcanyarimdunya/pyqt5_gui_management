@@ -18,15 +18,19 @@ class MainForm(QMainWindow, Ui_MainWindow):
         self.configure()
 
     def initialise(self):
+        self.statusbar.showMessage("Select project to edit, delete or configure.")
         splitter = QSplitter()
         self.left_form.setFrameShape(QFrame.StyledPanel)
         self.middle_form.setFrameShape(QFrame.StyledPanel)
 
         splitter.addWidget(self.left_form)
         splitter.addWidget(self.middle_form)
+        splitter.setSizes([100, 400])
 
         self.gridLayout.addWidget(splitter)
 
     def configure(self):
         self.middle_form.bind_add_dialog(self.left_form.dialog)
         self.middle_form.bind_edit_dialog(self.middle_form.dialog)
+        self.left_form.bind_add_dialog(self.left_form.dialog)
+        self.left_form.bind_edit_dialog(self.middle_form.dialog)

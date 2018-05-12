@@ -63,7 +63,7 @@ class CustomPandasModel(QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
 
 
-class CustomListModel(QtCore.QAbstractTableModel):
+class CustomTableModel(QtCore.QAbstractTableModel):
     def __init__(self, header: list = None, data: list = None, parent=None):
         super().__init__(parent=parent)
         self.__header = header
@@ -96,3 +96,5 @@ class CustomListModel(QtCore.QAbstractTableModel):
                 return QtCore.QVariant(str(self.__data[index.row()][index.column()]))
 
         return QtCore.QVariant()
+
+
