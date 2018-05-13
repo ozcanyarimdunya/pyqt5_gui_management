@@ -31,13 +31,13 @@ QPushButton:pressed {
 }
 
 QListView {
-    border:1px solid #205c7a;
+    border:1px solid #B8B5B2;
 }
 QListView::item {
     padding-top:10px;
     padding-left:10px;
     padding-bottom:10px;
-    border-bottom:1px solid #205c7a;
+    border-bottom:1px solid #B8B5B2;
     color:black;
 }
 QListView::item:hover {
@@ -52,3 +52,18 @@ QTableView::item:hover {
     color: #eff0f1;
 }
 
+QSplitter::handle {
+    border: 1px dashed #76797C;
+}
+
+QSplitter::handle:hover {
+    background-color: #B8B5B2;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+}
