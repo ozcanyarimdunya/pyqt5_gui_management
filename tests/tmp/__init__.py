@@ -1,99 +1,84 @@
-# https://gist.github.com/Riateche/5984815
-import sip
+import sys
+import time
 
-from PyQt5.QtCore import QAbstractTableModel, QModelIndex, Qt, pyqtSlot
-from PyQt5.QtWidgets import QItemDelegate, QPushButton, QComboBox, QTableView, QWidget, QVBoxLayout, QApplication, \
-    QHBoxLayout, QGroupBox, QFrame
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QWidget, QApplication
 
-sip.setapi('QString', 2)
-sip.setapi('QVariant', 2)
+from tests.tmp.multi_thread import Ui_FormMultiThread
 
 
-class TableModel(QAbstractTableModel):
-    def rowCount(self, parent=QModelIndex()):
-        return 2
+class GenericThread(QThread):
+    onStarted = pyqtSignal()
+    onFinished = pyqtSignal()
+    onValueChanged = pyqtSignal(int)
 
-    def columnCount(self, parent=QModelIndex()):
-        return 2
+    def __init__(self, _range: range, _sleep: float):
+        print("[GenericThread]:Thread initialised:")
+        super().__init__()
 
-    def data(self, index, role=Qt.DisplayRole):
-        if not index.isValid():
-            return None
-        if not role == Qt.DisplayRole:
-            return None
+        print("[GenericThread]:Thread args set:")
+        self._range = _range
+        self._sleep = _sleep
 
-        return "{0:02d}".format(index.row())
+    def run(self):
+        print("[GenericThread]:Thread started:")
+        self.onStarted.emit()
 
-    def setData(self, index, value, role=Qt.DisplayRole):
-        print("setData", index.row(), index.column(), value)
+        print("[GenericThread]:Thread running:")
+        for val in self._range:
+            time.sleep(self._sleep)
+            self.onValueChanged.emit(val)
 
-    def flags(self, index):
-        if index.column() == 0:
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
-        else:
-            return Qt.ItemIsEnabled
-
-
-class ButtonDelegate(QItemDelegate):
-
-    def __init__(self, parent):
-        super().__init__(parent)
-
-    def createEditor(self, parent, option, index):
-        frame = QWidget(parent)
-        box = QHBoxLayout(frame)
-        btn_1 = QPushButton("Edit")
-        btn_2 = QPushButton("Update")
-        box.addWidget(btn_1)
-        box.addWidget(btn_2)
-        box.setContentsMargins(0, 0, 0, 0)
-        frame.setLayout(box)
-        frame.setContentsMargins(0, 0, 0, 0)
-
-        return frame
+        print("[GenericThread]:Thread finished:")
+        self.onFinished.emit()
 
 
-class TableView(QTableView):
-    """
-    A simple table to demonstrate the QComboBox delegate.
-    """
+class MultiThreadForm(QWidget, Ui_FormMultiThread):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.move(550, 300)
+        self.configure()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def configure(self):
+        self.pushButton_start_1.clicked.connect(lambda: self.pushButton_start_1_clicked())
+        self.pushButton_start_2.clicked.connect(lambda: self.pushButton_start_2_clicked())
+        self.pushButton_set.clicked.connect(lambda: self.pushButton_set_clicked())
 
-        self.setItemDelegateForColumn(0, ButtonDelegate(self))
+    def pushButton_start_1_clicked(self):
+        def change_state(state):
+            self.pushButton_start_1.setEnabled(state)
+
+        def change_pb_value(val):
+            self.progressBar_1.setValue(val)
+
+        self.thread_1 = GenericThread(_range=range(101), _sleep=0.1)
+        self.thread_1.start()
+
+        self.thread_1.onStarted.connect(lambda: change_state(False))
+        self.thread_1.onFinished.connect(lambda: change_state(True))
+        self.thread_1.onValueChanged.connect(lambda val: change_pb_value(val))
+
+    def pushButton_start_2_clicked(self):
+        def change_state(state):
+            self.pushButton_start_2.setEnabled(state)
+
+        def change_pb_value(val):
+            self.progressBar_2.setValue(val)
+
+        self.thread_1 = GenericThread(_range=range(101), _sleep=0.2)
+        self.thread_1.start()
+
+        self.thread_1.onStarted.connect(lambda: change_state(False))
+        self.thread_1.onFinished.connect(lambda: change_state(True))
+        self.thread_1.onValueChanged.connect(lambda val: change_pb_value(val))
+
+    def pushButton_set_clicked(self):
+        ...
 
 
-class Widget(QWidget):
-    """
-    A simple test widget to contain and own the model and table.
-    """
-
-    def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
-
-        l = QVBoxLayout(self)
-        self._tm = TableModel(self)
-        self._tv = TableView(self)
-
-        self._tv.setShowGrid(False)
-        self._tv.setAlternatingRowColors(True)
-        self._tv.setModel(self._tm)
-        for row in range(0, self._tm.rowCount()):
-            # self._tv.openPersistentEditor(self._tm.index(row, 0))
-            self._tv.openPersistentEditor(self._tm.index(row, 0))
-
-        l.addWidget(self._tv)
-        self.setLayout(l)
-
-
-if __name__ == "__main__":
-    from sys import argv, exit
-
-    a = QApplication(argv)
-    w = Widget()
-    w.move(200, 100)
-    w.resize(400, 300)
-    w.show()
-    w.raise_()
-    exit(a.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    form = MultiThreadForm()
+    form.show()
+    sys.exit(app.exec_())

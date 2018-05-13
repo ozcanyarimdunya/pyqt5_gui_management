@@ -11,7 +11,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.move(300, 100)
-
+        self.statusbar.showMessage("Ready.")
         self.middle_form = MiddleWidget(parent=self)
         self.left_form = LeftWidget(parent=self)
 
@@ -41,7 +41,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.Enter:
             if obj == self.left_form:
-                self.statusbar.showMessage("Select project to go second window.")
+                self.statusbar.showMessage("Double click project to go second window.")
             if obj == self.middle_form:
                 self.statusbar.showMessage("Select project to edit, delete or configure.")
         return super().eventFilter(obj, event)

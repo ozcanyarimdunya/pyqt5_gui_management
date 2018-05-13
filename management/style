@@ -1,0 +1,54 @@
+QPushButton {
+    background-color:#d7d3cf;
+    font-size: 10pt;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: bold;
+
+    /*
+    background-color:#969390;
+    background-color:#4c7c94;
+    color:#151514;
+    color:white;
+    */
+
+    padding:8px;
+}
+QPushButton:hover {
+    background-color:#205c7a;
+    color:white;
+    font-size: 10pt;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: bold;
+    border:1.5px solid #205c7a;
+    border-radius:1px;
+}
+
+QPushButton:pressed {
+    background-color:#194961;
+    font-size: 8pt;
+}
+
+QListView {
+    border:1px solid #205c7a;
+}
+QListView::item {
+    padding-top:10px;
+    padding-left:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #205c7a;
+    color:black;
+}
+QListView::item:hover {
+    background: #2B7FB3;
+    color: #eff0f1;
+    text-align:center;
+    padding-left:20px;
+}
+
+QTableView::item:hover {
+    background: #2B7FB3;
+    color: #eff0f1;
+}
+
